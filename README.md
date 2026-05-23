@@ -118,3 +118,15 @@ skill-match.js
 ## 10. Atividade
 
 Projeto desenvolvido como atividade da disciplina SCTEC.
+
+Planejamento do projeto no Trello:
+
+```text
+https://trello.com/b/WP57Ry1c/sctec-front-end-match
+```
+
+Repositorio do projeto no GitHub:
+
+```text
+https://github.com/Salas-coder/frontend-job-match
+```
