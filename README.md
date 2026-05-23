@@ -1,4 +1,4 @@
-# SkillMatch JS
+# Frontend-Job-Match
 
 Simulador em JavaScript puro que analisa a compatibilidade entre candidatos e vagas de Front-End Junior.
 
