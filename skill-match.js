@@ -33,34 +33,17 @@ var vagas = [
   }
 ];
 
-// Percorre todas as vagas disponiveis
-for (var i = 0; i < vagas.length; i++) {
-  var vaga = vagas[i];
+// O map cria um novo array com o resultado de cada vaga
+var resultados = vagas.map(function (vaga) {
+  // O filter cria um array apenas com as habilidades que o candidato possui
+  var habilidadesEncontradas = vaga.habilidades.filter(function (habilidade) {
+    return candidato.habilidades.includes(habilidade);
+  });
 
-  var habilidadesEncontradas = [];
-  var habilidadesFaltantes = [];
-
-  // Percorre as habilidades pedidas pela vaga
-  for (var j = 0; j < vaga.habilidades.length; j++) {
-    var habilidadeDaVaga = vaga.habilidades[j];
-    var encontrou = false;
-
-    // Compara a habilidade da vaga com as habilidades do candidato
-    for (var k = 0; k < candidato.habilidades.length; k++) {
-      var habilidadeDoCandidato = candidato.habilidades[k];
-
-      if (habilidadeDaVaga === habilidadeDoCandidato) {
-        encontrou = true;
-      }
-    }
-
-    // Guarda a habilidade como encontrada ou faltante
-    if (encontrou === true) {
-      habilidadesEncontradas.push(habilidadeDaVaga);
-    } else {
-      habilidadesFaltantes.push(habilidadeDaVaga);
-    }
-  }
+  // O filter tambem cria um array com as habilidades que o candidato ainda nao possui
+  var habilidadesFaltantes = vaga.habilidades.filter(function (habilidade) {
+    return !candidato.habilidades.includes(habilidade);
+  });
 
   // Calcula a porcentagem de compatibilidade
   var totalDeHabilidades = vaga.habilidades.length;
@@ -78,15 +61,59 @@ for (var i = 0; i < vagas.length; i++) {
     classificacao = "Baixa compatibilidade";
   }
 
-  // Mostra o resultado organizado no console
+  // Retorna um objeto com os dados da vaga e o resultado da comparacao
+  return {
+    empresa: vaga.empresa,
+    cargo: vaga.cargo,
+    cidade: vaga.cidade,
+    porcentagem: porcentagem,
+    classificacao: classificacao,
+    habilidadesEncontradas: habilidadesEncontradas,
+    habilidadesFaltantes: habilidadesFaltantes
+  };
+});
+
+// Mostra o resultado de cada vaga no console
+for (var i = 0; i < resultados.length; i++) {
+  var resultado = resultados[i];
+
   console.log("-----------------------------");
-  console.log("Empresa: " + vaga.empresa);
-  console.log("Cargo: " + vaga.cargo);
-  console.log("Cidade: " + vaga.cidade);
-  console.log("Compatibilidade: " + porcentagem.toFixed(0) + "%");
-  console.log("Classificacao: " + classificacao);
+  console.log("Empresa: " + resultado.empresa);
+  console.log("Cargo: " + resultado.cargo);
+  console.log("Cidade: " + resultado.cidade);
+  console.log("Compatibilidade: " + resultado.porcentagem.toFixed(0) + "%");
+  console.log("Classificacao: " + resultado.classificacao);
   console.log("Habilidades encontradas:");
-  console.log(habilidadesEncontradas);
+  console.log(resultado.habilidadesEncontradas);
   console.log("Habilidades faltantes:");
-  console.log(habilidadesFaltantes);
+  console.log(resultado.habilidadesFaltantes);
+}
+
+// O reduce encontra a vaga com maior compatibilidade
+var melhorVaga = resultados.reduce(function (melhor, atual) {
+  if (atual.porcentagem > melhor.porcentagem) {
+    return atual;
+  } else {
+    return melhor;
+  }
+});
+
+// Mostra a vaga com maior compatibilidade
+console.log("=============================");
+console.log("Vaga com maior compatibilidade");
+console.log("Empresa: " + melhorVaga.empresa);
+console.log("Cargo: " + melhorVaga.cargo);
+console.log("Compatibilidade: " + melhorVaga.porcentagem.toFixed(0) + "%");
+
+// Gera uma recomendacao de estudo baseada nas habilidades faltantes
+console.log("-----------------------------");
+console.log("Recomendacao de estudo:");
+
+if (melhorVaga.habilidadesFaltantes.length === 0) {
+  console.log("Voce ja possui todas as habilidades pedidas para essa vaga.");
+  console.log("Continue praticando projetos com " + melhorVaga.habilidadesEncontradas[0] + ".");
+} else {
+  console.log("Para melhorar sua compatibilidade, estude:");
+  console.log(melhorVaga.habilidadesFaltantes);
+  console.log("Sugestao: comece estudando " + melhorVaga.habilidadesFaltantes[0] + ".");
 }
