@@ -130,3 +130,8 @@ Repositorio do projeto no GitHub:
 ```text
 https://github.com/Salas-coder/frontend-job-match
 ```
+
+Video Explicação do Projeto Front-End Match
+```text
+https://drive.google.com/file/d/16VxOwhi3Sa7Tk7LDApzczsU15Vb14jCk/view?usp=drive_link
+```
